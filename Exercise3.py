@@ -4,30 +4,29 @@ from PIL import Image, ImageOps
 import matplotlib.pyplot as plt
 
 from tensorflow import keras
-import ssl
+
 import math
 
 (x_train, y_train), (x_test, y_test) =keras.datasets.cifar10.load_data()
-x_train, x_test = x_train/255, x_test/255
+x_train, x_test = x_train /255, x_test/255
 
 img = x_train[4]
 
 img = np.array(img)
-img = np.resize(img, (255,255,3))
-
-print(img)
 
 
-def plot_image(img: np.array):
-    plt.figure(figsize=(6, 6))
-    plt.imshow(img, cmap='gray');
-
-plot_image(img)
 
 
-kernel1 = np.array( [[1,0,1],
-                    [1,0,1],
-                    [1,0,1]])
+
+plt.imshow(img)
+plt.show()
+
+
+
+kernel1 = np.array( [[-1,-1,-1],
+                    [0,0,0,],
+                    [1,1,1,]],
+                   )
 
 
 
@@ -46,7 +45,6 @@ def calculate_target_size(img_size: int, kernel_size: int) -> int:
     return num_pixels
 
 
-print(calculate_target_size(255, math.sqrt(kernel1.size)))
 
 
 
@@ -76,10 +74,11 @@ def convolve(img: np.array, kernel: np.array) -> np.array:
             
     return convolved_img
 
+img2 = np.zeros(shape=(30,30,3))
+for i in range(img.shape[2]):
 
-
-
-print(convolve(img, kernel1)    )
-
-plt.imshow(img)
+    img2[:,:,i] = convolve(img[:,:,i], kernel1)
+plt.imshow(img2)
 plt.show()
+
+
