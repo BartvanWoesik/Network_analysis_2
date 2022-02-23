@@ -5,15 +5,18 @@ import matplotlib.pyplot as plt
 
 from tensorflow import keras
 import ssl
+import math
 
 (x_train, y_train), (x_test, y_test) =keras.datasets.cifar10.load_data()
 x_train, x_test = x_train/255, x_test/255
 
 img = x_train[4]
-plt.imshow(img)
-plt.show()
 
-print(img.size)
+img = np.array(img)
+img = np.resize(img, (255,255,3))
+
+print(img)
+
 
 def plot_image(img: np.array):
     plt.figure(figsize=(6, 6))
@@ -42,3 +45,41 @@ def calculate_target_size(img_size: int, kernel_size: int) -> int:
             
     return num_pixels
 
+
+print(calculate_target_size(255, math.sqrt(kernel1.size)))
+
+
+
+def convolve(img: np.array, kernel: np.array) -> np.array:
+    # Assuming a rectangular image
+    tgt_size = calculate_target_size(
+        img_size=img.shape[0],
+        kernel_size=kernel.shape[0]
+    )
+    # To simplify things
+    k = kernel.shape[0]
+    
+    # 2D array of zeros
+    convolved_img = np.zeros(shape=(tgt_size, tgt_size))
+    
+    # Iterate over the rows
+    for i in range(tgt_size):
+        # Iterate over the columns
+        for j in range(tgt_size):
+            # img[i, j] = individual pixel value
+            # Get the current matrix
+            mat = img[i:i+k, j:j+k]
+            
+            # Apply the convolution - element-wise multiplication and summation of the result
+            # Store the result to i-th row and j-th column of our convolved_img array
+            convolved_img[i, j] = np.sum(np.multiply(mat, kernel))
+            
+    return convolved_img
+
+
+
+
+print(convolve(img, kernel1)    )
+
+plt.imshow(img)
+plt.show()
