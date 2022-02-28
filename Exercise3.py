@@ -85,6 +85,7 @@ def rel(img: np.array) -> np.array:
 def max_pooling(img: np.array, pool_height, pool_width) -> np.array:
     img_width = img.shape[1]
     img_height = img.shape[0]
+
     # find out the colors of the image
     try:
         img_depth       = img.shape[2]
@@ -100,17 +101,27 @@ def max_pooling(img: np.array, pool_height, pool_width) -> np.array:
     left_height = img_height % pool_height
 
 
+    # Create new image shape based on fit of pooling
+    if(left_widtch > 0 & left_height > 0 ):
+        new_img = np.zeros(shape=( fit_height+ 1,fit_width + 1, img_depth))
+    elif(left_widtch > 0 & left_height == 0 ):
+        new_img = np.zeros(shape=( fit_height,fit_width + 1, img_depth))
+    elif(left_widtch == 0 & left_height > 0 ):
+        new_img = np.zeros(shape=( fit_height +1 ,fit_width , img_depth))
+    elif(left_widtch == 0 & left_height == 0 ):
+        new_img = np.zeros(shape=( fit_height,fit_width, img_depth))
+
     # Go through all whole pooling fit areas of the image
     for x in range(img_dept):
         for j in range(fit_width):
             for i in range(fit_height):
-                pass
+                new_img[i, j , x] = np.max(img[i*pool_height: (i+1):pool_height, ])
     
 
 
 
 new_img = rel(new_img)
-new_img= max_pooling(new_img[:,:,1],3,3)
+new_img= max_pooling(3,3)
 plt.imshow(new_img)
 plt.show()
 print(new_img)
