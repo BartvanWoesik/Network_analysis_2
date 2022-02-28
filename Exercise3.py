@@ -28,7 +28,8 @@ kernel2 = np.array( [[-1,0,1],
                     [-1,0,1]],
                    )
 
-
+plt.imshow(img)
+plt.show()
 
 
 
@@ -70,9 +71,10 @@ def convolve2(img: np.array, kernel: np.array) -> np.array:
     return new_img
 
 
-new_img = convolve2(img, kernel1)
+new_img = convolve2(img, kernel2)
 
-
+plt.imshow(new_img)
+plt.show()
 
 def rel(img: np.array) -> np.array:
     new_img = img
@@ -98,15 +100,8 @@ def max_pooling(img: np.array, pool_height, pool_width) -> np.array:
     left_height = img_height % pool_height
 
 
-    # Create new image shape based on fit of pooling
-    if(left_widtch > 0 & left_height > 0 ):
-        new_img = np.zeros(shape=( fit_height+ 1,fit_width + 1, img_depth))
-    elif(left_widtch > 0 & left_height == 0 ):
-        new_img = np.zeros(shape=( fit_height,fit_width + 1, img_depth))
-    elif(left_widtch == 0 & left_height > 0 ):
-        new_img = np.zeros(shape=( fit_height +1 ,fit_width , img_depth))
-    elif(left_widtch == 0 & left_height == 0 ):
-        new_img = np.zeros(shape=( fit_height,fit_width, img_depth))
+  
+    new_img = np.zeros(shape=( fit_height,fit_width, img_depth))
 
     # Go through all whole pooling fit areas of the image
     for x in range(img_depth):
@@ -118,7 +113,7 @@ def max_pooling(img: np.array, pool_height, pool_width) -> np.array:
     return new_img
 
 new_img = rel(new_img)
-new_img= max_pooling(new_img, 5,5)
+new_img= max_pooling(new_img, 2,2)
 plt.imshow(new_img)
 plt.show()
 print(new_img.shape)
