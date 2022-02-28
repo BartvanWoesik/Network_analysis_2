@@ -14,11 +14,8 @@ x_train, x_test = x_train /255, x_test/255
 
 img = image.imread("test2.jpg")
 
+img = img/255
 
-print(img.shape)
-
-plt.imshow(img)
-plt.show()
 
 
 
@@ -73,7 +70,7 @@ def convolve2(img: np.array, kernel: np.array) -> np.array:
     return new_img
 
 
-new_img = convolve2(img, kernel2)
+new_img = convolve2(img, kernel1)
 
 
 
@@ -112,16 +109,16 @@ def max_pooling(img: np.array, pool_height, pool_width) -> np.array:
         new_img = np.zeros(shape=( fit_height,fit_width, img_depth))
 
     # Go through all whole pooling fit areas of the image
-    for x in range(img_dept):
+    for x in range(img_depth):
         for j in range(fit_width):
             for i in range(fit_height):
-                new_img[i, j , x] = np.max(img[i*pool_height: (i+1):pool_height, ])
+                new_img[i, j , x] = np.max(img[i*pool_height:( (i+1)*pool_height-1), j*pool_height: ((j+1)*pool_width-1), x])
     
 
-
+    return new_img
 
 new_img = rel(new_img)
-new_img= max_pooling(3,3)
+new_img= max_pooling(new_img, 5,5)
 plt.imshow(new_img)
 plt.show()
-print(new_img)
+print(new_img.shape)
