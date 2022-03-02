@@ -23,24 +23,24 @@ kernel1 = np.array( [[-1,-1,-1],
                     [-1,8,-1],
                     [-1,-1,-1]],
                    )
-kernel2 = np.array( [[-1,0,1],
-                    [-2,0,2],
-                    [-1,0,1]],
+kernel2 = np.array( [[-1,0,1,1],
+                    [-2,0,2,1],
+                    [-1,0,1,1],
+                    [1,1,1,1]],
                    )
 
 
 kernel3 = np.array([kernel1, kernel2])
-print(kernel3)
-print(kernel3.shape)
-plt.imshow(img)
-plt.show()
+print(kernel3[1])
+print(kernel3.shape[0])
+
 
 
 # QUESTION 20
 def convolve2(img: np.array, kernel: np.array) -> np.array:
+
+    kernel_num      = kernel.shape[0]
     
-    kernel_height   = kernel.shape[1] 
-    kernel_width    = kernel.shape[2]
     img_height      = img.shape[0]
     img_width       = img.shape[1]
 
@@ -51,40 +51,54 @@ def convolve2(img: np.array, kernel: np.array) -> np.array:
         img_depth = 1
 
     
-    mis_match_width = math.floor(kernel_width/2)
-    mis_match_height = math.floor(kernel_height/2)
+    final_shape = []
 
-    fit_width = img_width - 2*mis_match_width
-    fit_height= img_height - 2*mis_match_height
+  
+    for p in range(0, kernel_num):
+        kern = kernel[p]
+        print(kern)
+        print("go")
+        kernel_height   = kern.shape[0] 
+        kernel_width    = kern.shape[1]
 
-    new_img = np.zeros(shape=( fit_height,fit_width, img_depth))
-    print(new_img.shape)
+        mis_match_width = math.floor(kernel_width/2)
+        mis_match_height = math.floor(kernel_height/2)
 
-    for x in range(0, img_depth):
-        for j in range( fit_width- mis_match_width):
-        # Iterate over the columns
-            for i in range( fit_height - mis_match_height):
-                # img[i, j] = individual pixel value
-                # Get the current matrix
-                mat = img[i:i+kernel_width, j:j+kernel_height, x]
-                
-                # Apply the convolution - element-wise multiplication and summation of the result
-                # Store the result to i-th row and j-th column of our convolved_img array
-                new_img[i+mis_match_height, j+ mis_match_width,x] = np.sum(np.multiply(mat, kernel))
+        fit_width = img_width - 2*mis_match_width
+        fit_height= img_height - 2*mis_match_height
 
-    return new_img
+        new_img = np.zeros(shape=( fit_height,fit_width, img_depth, kernel_num))
+        for x in range(0, img_depth):
+            for j in range( fit_width- mis_match_width):
+            # Iterate over the columns
+                for i in range( fit_height - mis_match_height):
+                    # img[i, j] = individual pixel value
+                    # Get the current matrix
+                    mat = img[i:i+kernel_width, j:j+kernel_height, x]
+                    
+                    # Apply the convolution - element-wise multiplication and summation of the result
+                    # Store the result to i-th row and j-th column of our convolved_img array
+                    new_img[i+mis_match_height, j+ mis_match_width,x] = np.sum(np.multiply(mat, kern))
+        final_shape.append(new_img)
+    
+    final_shape = np.array(final_shape)
+
+    return final_shape
 
 
-new_img = convolve2(img, kernel2)
+new_img = convolve2(img, kernel3)
 
-plt.imshow(new_img)
-plt.show()
+print(new_img[1])
 
 
 # QUESTION 21
 def rel(img: np.array) -> np.array:
-    new_img = img
-    new_img[new_img <0] = 0
+    num_features = img.shape[0]
+    final_shape = []
+    for i in range(num_features):
+        new_img = img[1]
+        new_img[new_img <0] = 0
+        final_shape.append(new_img)
     return new_img
 
 # QUESTION 22
