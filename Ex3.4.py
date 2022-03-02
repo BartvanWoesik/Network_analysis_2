@@ -18,10 +18,22 @@ def convolve(input: np.array, kernel_size, depth):
 
     output = np.zeros(output_shape)
     for i in range(depth):
+            kernel = kernels[i]
+            
+            for j in range(input_height - kernel_size +1):
+                for k in range( input_width- kernel_size+1):
+                 
+                    
+                    
        
-        p= signal.convolve(input, kernels[i], 'valid')
-        p = (np.squeeze(p, axis = 2))
-        output[i] = p
+                    input_part = input[j:(j + kernel_size),
+                                        k:(k+kernel_size),:]
+                  
+                    output[i,j,k]  = np.sum(np.multiply(kernel, input_part))
+                
+                    
+           
+                    
     return output
 
 
