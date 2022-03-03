@@ -31,9 +31,7 @@ def convolve(input: np.array, kernel_size, depth):
                   
                     output[i,j,k]  = np.sum(np.multiply(kernel, input_part))
                 
-                    
-           
-                    
+          
     return output
 
 
